@@ -1,4 +1,4 @@
-[
+export const Data = [
   {
     "id": 1,
     "company": "Photosnap",
@@ -148,5 +148,5 @@
     "location": "Worldwide",
     "languages": ["JavaScript"],
     "tools": ["React", "Sass"]
-  }
-]
+  },
+];
