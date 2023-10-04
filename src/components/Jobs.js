@@ -5,7 +5,23 @@ function Jobs() {
 		<>
 			{Data.map((job) => (
 				<article key={job.id}>
-					<h2>{job.id}</h2>
+					<div>
+						<div>
+							<h2>{job.position}</h2>
+							<ul>
+								<li>{job.postedAt}</li>
+								<li>{job.contract}</li>
+								<li>{job.location}</li>
+							</ul>
+						</div>
+						<img src={job.logo} alt={job.position} />
+					</div>
+
+					<ul className="lang-list">
+						{job.languages.map((lang, index) => (
+							<li key={index}>{lang}</li>
+						))}
+					</ul>
 				</article>
 			))}
 		</>
