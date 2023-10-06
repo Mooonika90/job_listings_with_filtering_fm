@@ -7,29 +7,47 @@ export const JobProvider = ({ children }) => {
 	const [selectedLevel, setSelectedLevel] = useState('');
 	const [selectedRole, setSelectedRole] = useState('');
 	const [showModal, setShowModal] = useState(false);
-	const handleLanguageClick = (language) =>
-		setSelectedLanguages((prevLanguages) =>
-			prevLanguages.includes(language)
-				? prevLanguages.filter((lang) => lang !== language)
-				: [...prevLanguages, language]
-		);
 
+	const [selectedFilters, setSelectedFilters] = useState({
+		languages: [],
+		level: '',
+		role: '',
+	});
+
+	const handleLanguageClick = (language) => {
+		setSelectedFilters((prevFilters) => ({
+			...prevFilters,
+			languages: prevFilters.languages.includes(language)
+				? prevFilters.languages.filter((lang) => lang !== language)
+				: [...prevFilters.languages, language],
+		}));
+	};
 	const handleLevelClick = (level) => {
-		setSelectedLevel((prevLevel) => (prevLevel === level ? '' : level));
+		setSelectedFilters((prevFilters) => ({
+			...prevFilters,
+			level: prevFilters.level === level ? '' : level,
+		}));
 	};
 
 	const handleRoleClick = (role) => {
-		setSelectedRole((prevRole) => (prevRole === role ? '' : role));
+		setSelectedFilters((prevFilters) => ({
+			...prevFilters,
+			role: prevFilters.role === role ? '' : role,
+		}));
 	};
+
 	const clearAll = () => {
-		setSelectedLanguages([]);
-		setSelectedLevel('');
-		setSelectedRole('');
+		setSelectedFilters({
+			languages: [],
+			level: '',
+			role: '',
+		});
 		setShowModal(false);
 	};
 	return (
 		<JobContext.Provider
 			value={{
+				selectedFilters,
 				selectedLanguages,
 				selectedLevel,
 				selectedRole,

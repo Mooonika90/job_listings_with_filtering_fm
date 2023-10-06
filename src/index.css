@@ -198,6 +198,7 @@ article div ul,
 	gap: 1.2rem;
 	flex-wrap: wrap;
 }
+
 .lang-list li {
 	list-style-type: none;
 	color: var(--desaturated-dark-cyan);
@@ -222,9 +223,19 @@ article div ul,
 	justify-content: space-between;
 }
 
-.filter-modal span {
-	color: var(--dark-grayish-cyan);
-	font-weight: 700;
+.modal-list .modal-item {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+	padding: 0;
+	padding-left: 0.5rem;
+	overflow: hidden;
+}
+.modal-item span {
+	background: var(--desaturated-dark-cyan);
+	color: var(--white);
+	padding: 0 0.6rem;
+	font-size: 1.3rem;
 }
 
 @media (min-width: 50rem) {
@@ -256,5 +267,8 @@ article div ul,
 	.lang-list {
 		display: flex;
 		gap: var(--gap);
+	}
+	.lang-list {
+		justify-content: flex-end;
 	}
 }
