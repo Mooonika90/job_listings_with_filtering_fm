@@ -1,32 +1,30 @@
-import { useState } from 'react';
 import { Data } from '../data/data';
+import JobFilter from './JobFilter';
+import { useJobContext } from '../ContextProvider';
+
 
 function Jobs() {
-	const [selectedLanguages, setSelectedLanguages] = useState([]);
-	const [selectedLevel, setSelectedLevel] = useState('');
-	const [selectedRole, setSelectedRole] = useState('');
+	const {
+		selectedLanguages,
+		selectedLevel,
+		selectedRole,
+		showModal,
+		setShowModal,
+		handleLanguageClick,
+		handleLevelClick,
+		handleRoleClick,
+	} = useJobContext();
 
-	const filterJobs = ({ languages, level, role, ...job }) => {
-		const hasSelectedLanguages =
-			selectedLanguages.length === 0 ||
-			selectedLanguages.every((lang) => languages.includes(lang));
-		const hasSelectedLevel = selectedLevel === '' || level === selectedLevel;
-		const hasSelectedRole = selectedRole === '' || role === selectedRole;
-		return hasSelectedLanguages && hasSelectedLevel && hasSelectedRole;
-	};
-
-	const handleLanguageClick = (language) => {
-		if (selectedLanguages.includes(language)) {
-			setSelectedLanguages(
-				selectedLanguages.filter((lang) => lang !== language)
-			);
-		} else {
-			setSelectedLanguages([...selectedLanguages, language]);
-		}
-	};
+	const filterJobs = ({ languages, level, role, ...job }) =>
+		(selectedLanguages.length === 0 ||
+			selectedLanguages.every((lang) => languages.includes(lang))) &&
+		(selectedLevel === '' || level === selectedLevel) &&
+		(selectedRole === '' || role === selectedRole);
 
 	return (
 		<>
+			{showModal && <JobFilter />}
+
 			{Data.filter(filterJobs).map(
 				({
 					id,
@@ -59,10 +57,10 @@ function Jobs() {
 							</div>
 							<img src={logo} alt={position} />
 						</div>
-
-						<ul className='lang-list'>
-							<li>{role}</li>
-							<li>{level}</li>
+						<div className='hr'></div>
+						<ul className='lang-list' onClick={() => setShowModal(true)}>
+							<li onClick={() => handleRoleClick(role)}>{role}</li>
+							<li onClick={() => handleLevelClick(level)}>{level}</li>
 							{languages.map((language, index) => (
 								<li
 									key={index}
