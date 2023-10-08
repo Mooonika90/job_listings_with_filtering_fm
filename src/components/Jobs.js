@@ -1,25 +1,18 @@
 import { Data } from '../data/data';
 import JobFilter from './JobFilter';
 import { useJobContext } from '../ContextProvider';
-
+import { useEffect } from 'react';
 
 function Jobs() {
 	const {
-		selectedLanguages,
-		selectedLevel,
-		selectedRole,
 		showModal,
 		setShowModal,
+		selectedFilters,
 		handleLanguageClick,
 		handleLevelClick,
+		filterJobs,
 		handleRoleClick,
 	} = useJobContext();
-
-	const filterJobs = ({ languages, level, role, ...job }) =>
-		(selectedLanguages.length === 0 ||
-			selectedLanguages.every((lang) => languages.includes(lang))) &&
-		(selectedLevel === '' || level === selectedLevel) &&
-		(selectedRole === '' || role === selectedRole);
 
 	return (
 		<>
@@ -64,9 +57,7 @@ function Jobs() {
 							{languages.map((language, index) => (
 								<li
 									key={index}
-									className={
-										selectedLanguages.includes(language) ? 'selected' : ''
-									}
+									className={languages.includes(language) ? 'selected' : ''}
 									onClick={() => handleLanguageClick(language)}>
 									{language}
 								</li>

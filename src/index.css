@@ -223,19 +223,23 @@ article div ul,
 	justify-content: space-between;
 }
 
-.modal-list .modal-item {
+.modal-list li {
 	display: flex;
 	align-items: center;
+
 	gap: 0.5rem;
 	padding: 0;
 	padding-left: 0.5rem;
 	overflow: hidden;
 }
-.modal-item span {
+
+.modal-list li button {
+	border: none;
 	background: var(--desaturated-dark-cyan);
-	color: var(--white);
-	padding: 0 0.6rem;
-	font-size: 1.3rem;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 100%;
 }
 
 @media (min-width: 50rem) {

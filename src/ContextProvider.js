@@ -3,9 +3,6 @@ import React, { createContext, useContext, useState } from 'react';
 const JobContext = createContext();
 
 export const JobProvider = ({ children }) => {
-	const [selectedLanguages, setSelectedLanguages] = useState([]);
-	const [selectedLevel, setSelectedLevel] = useState('');
-	const [selectedRole, setSelectedRole] = useState('');
 	const [showModal, setShowModal] = useState(false);
 
 	const [selectedFilters, setSelectedFilters] = useState({
@@ -14,6 +11,13 @@ export const JobProvider = ({ children }) => {
 		role: '',
 	});
 
+	const filterJobs = ({ languages, level, role, ...job }) =>
+		(selectedFilters.languages.length === 0 ||
+			selectedFilters.languages.every((lang) =>
+				selectedFilters.languages.includes(lang)
+			)) &&
+		(selectedFilters.level === '' || level === selectedFilters.level) &&
+		(selectedFilters.role === '' || role === selectedFilters.role);
 	const handleLanguageClick = (language) => {
 		setSelectedFilters((prevFilters) => ({
 			...prevFilters,
@@ -48,14 +52,13 @@ export const JobProvider = ({ children }) => {
 		<JobContext.Provider
 			value={{
 				selectedFilters,
-				selectedLanguages,
-				selectedLevel,
-				selectedRole,
+				setSelectedFilters,
 				handleLanguageClick,
 				handleLevelClick,
 				handleRoleClick,
 				clearAll,
 				showModal,
+				filterJobs,
 				setShowModal,
 			}}>
 			{children}
