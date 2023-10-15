@@ -1,65 +1,53 @@
-import React, { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useState } from 'react';
+import { Data } from './data/data';
 
 const JobContext = createContext();
 
 export const JobProvider = ({ children }) => {
-	const [showModal, setShowModal] = useState(false);
+	const [jobs, setJobs] = useState(Data);
 
-	const [selectedFilters, setSelectedFilters] = useState({
-		languages: [],
-		level: '',
-		role: '',
-	});
+	const [filters, setFilters] = useState([]);
 
-	const filterJobs = ({ languages, level, role, ...job }) =>
-		(selectedFilters.languages.length === 0 ||
-			selectedFilters.languages.every((lang) =>
-				selectedFilters.languages.includes(lang)
-			)) &&
-		(selectedFilters.level === '' || level === selectedFilters.level) &&
-		(selectedFilters.role === '' || role === selectedFilters.role);
-	const handleLanguageClick = (language) => {
-		setSelectedFilters((prevFilters) => ({
-			...prevFilters,
-			languages: prevFilters.languages.includes(language)
-				? prevFilters.languages.filter((lang) => lang !== language)
-				: [...prevFilters.languages, language],
-		}));
+	const addFilter = (filter) => {
+		if (filters.includes(filter)) return;
+		setFilters([...filters, filter]);
 	};
-	const handleLevelClick = (level) => {
-		setSelectedFilters((prevFilters) => ({
-			...prevFilters,
-			level: prevFilters.level === level ? '' : level,
-		}));
+	console.log(filters.length);
+	const removeFilter = (filter) => {
+		setFilters(filters.filter((f) => f !== filter));
 	};
 
-	const handleRoleClick = (role) => {
-		setSelectedFilters((prevFilters) => ({
-			...prevFilters,
-			role: prevFilters.role === role ? '' : role,
-		}));
+	const clearFilters = () => {
+		setFilters([]);
+	};
+	const filterFunction = ({ role, level, tools, languages }) => {
+		if (filters.length === 0) {
+			return true;
+		}
+
+		const tags = [role, level];
+
+		if (tools) {
+			tags.push(...tools);
+		}
+
+		if (languages) {
+			tags.push(...languages);
+		}
+
+		return filters.every((filter) => tags.includes(filter));
 	};
 
-	const clearAll = () => {
-		setSelectedFilters({
-			languages: [],
-			level: '',
-			role: '',
-		});
-		setShowModal(false);
-	};
+	const filteredJobs = jobs.filter(filterFunction);
+
 	return (
 		<JobContext.Provider
 			value={{
-				selectedFilters,
-				setSelectedFilters,
-				handleLanguageClick,
-				handleLevelClick,
-				handleRoleClick,
-				clearAll,
-				showModal,
-				filterJobs,
-				setShowModal,
+				addFilter,
+				removeFilter,
+				clearFilters,
+				filters,
+				filteredJobs,
 			}}>
 			{children}
 		</JobContext.Provider>

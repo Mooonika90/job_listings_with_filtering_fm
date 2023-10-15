@@ -222,11 +222,15 @@ article div ul,
 	align-items: center;
 	justify-content: space-between;
 }
+.filter-modal span {
+	color: var(--desaturated-dark-cyan);
+	cursor: pointer;
+	font-weight: bold;
+}
 
 .modal-list li {
 	display: flex;
 	align-items: center;
-
 	gap: 0.5rem;
 	padding: 0;
 	padding-left: 0.5rem;

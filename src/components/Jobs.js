@@ -1,24 +1,14 @@
-import { Data } from '../data/data';
 import JobFilter from './JobFilter';
 import { useJobContext } from '../ContextProvider';
-import { useEffect } from 'react';
 
 function Jobs() {
-	const {
-		showModal,
-		setShowModal,
-		selectedFilters,
-		handleLanguageClick,
-		handleLevelClick,
-		filterJobs,
-		handleRoleClick,
-	} = useJobContext();
+	const { filteredJobs, filters, addFilter } = useJobContext();
 
 	return (
 		<>
-			{showModal && <JobFilter />}
+			{filters.length >= 1 ? <JobFilter /> : ''}
 
-			{Data.filter(filterJobs).map(
+			{filteredJobs.map(
 				({
 					id,
 					company,
@@ -32,39 +22,43 @@ function Jobs() {
 					role,
 					level,
 					languages,
-				}) => (
-					<article key={id} className={featured ? 'featured-border' : ''}>
-						<div>
+					tools,
+				}) => {
+					const tags = [role, level, ...languages, ...tools];
+
+					return (
+						<article key={id} className={featured ? 'featured-border' : ''}>
 							<div>
-								<div className='position-info'>
-									<h2>{company}</h2>
-									{isNew && <span className='position-new'>NEW!</span>}
-									{featured && <span className='featured'>featured</span>}
+								<div>
+									<div className='position-info'>
+										<h2>{company}</h2>
+										{isNew && <span className='position-new'>NEW!</span>}
+										{featured && <span className='featured'>featured</span>}
+									</div>
+									<h3>{position}</h3>
+									<ul>
+										<li>{postedAt}</li>
+										<li>{contract}</li>
+										<li>{location}</li>
+									</ul>
 								</div>
-								<h3>{position}</h3>
-								<ul>
-									<li>{postedAt}</li>
-									<li>{contract}</li>
-									<li>{location}</li>
-								</ul>
+								<img src={logo} alt={position} />
 							</div>
-							<img src={logo} alt={position} />
-						</div>
-						<div className='hr'></div>
-						<ul className='lang-list' onClick={() => setShowModal(true)}>
-							<li onClick={() => handleRoleClick(role)}>{role}</li>
-							<li onClick={() => handleLevelClick(level)}>{level}</li>
-							{languages.map((language, index) => (
-								<li
-									key={index}
-									className={languages.includes(language) ? 'selected' : ''}
-									onClick={() => handleLanguageClick(language)}>
-									{language}
-								</li>
-							))}
-						</ul>
-					</article>
-				)
+							<div className='hr'></div>
+
+							<ul className='lang-list'>
+								{tags.map((tag, index) => (
+									<li
+										key={index}
+										className={tags.includes(tag) ? 'selected' : ''}
+										onClick={() => addFilter(tag)}>
+										{tag}
+									</li>
+								))}
+							</ul>
+						</article>
+					);
+				}
 			)}
 		</>
 	);
