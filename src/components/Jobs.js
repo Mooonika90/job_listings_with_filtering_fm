@@ -2,13 +2,13 @@ import JobFilter from './JobFilter';
 import { useJobContext } from '../ContextProvider';
 
 function Jobs() {
-	const { filteredJobs, filters, addFilter } = useJobContext();
+	const { selectedFilters, filterJobs, addFilter } = useJobContext();
 
 	return (
 		<>
-			{filters.length >= 1 ? <JobFilter /> : ''}
+			{filterJobs.length >= 1 ? <JobFilter /> : ''}
 
-			{filteredJobs.map(
+			{selectedFilters.map(
 				({
 					id,
 					company,
@@ -24,7 +24,7 @@ function Jobs() {
 					languages,
 					tools,
 				}) => {
-					const tags = [role, level, ...languages, ...tools];
+					const filterOption = [role, level, ...languages, ...tools];
 
 					return (
 						<article key={id} className={featured ? 'featured-border' : ''}>
@@ -47,12 +47,12 @@ function Jobs() {
 							<div className='hr'></div>
 
 							<ul className='lang-list'>
-								{tags.map((tag, index) => (
+								{filterOption.map((option, index) => (
 									<li
 										key={index}
-										className={tags.includes(tag) ? 'selected' : ''}
-										onClick={() => addFilter(tag)}>
-										{tag}
+										className={filterOption.includes(option) ? 'selected' : ''}
+										onClick={() => addFilter(option)}>
+										{option}
 									</li>
 								))}
 							</ul>

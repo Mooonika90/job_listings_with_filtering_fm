@@ -4,50 +4,39 @@ import { Data } from './data/data';
 const JobContext = createContext();
 
 export const JobProvider = ({ children }) => {
-	const [jobs, setJobs] = useState(Data);
-
-	const [filters, setFilters] = useState([]);
+	const [data, setData] = useState(Data);
+	const [filterJobs, setFilterJobs] = useState([]);
 
 	const addFilter = (filter) => {
-		if (filters.includes(filter)) return;
-		setFilters([...filters, filter]);
-	};
-	console.log(filters.length);
-	const removeFilter = (filter) => {
-		setFilters(filters.filter((f) => f !== filter));
+		if (filterJobs.includes(filter)) return;
+		setFilterJobs([...filterJobs, filter]);
 	};
 
-	const clearFilters = () => {
-		setFilters([]);
+	const removeFilter = (filter) => {
+		setFilterJobs(filterJobs.filter((fil) => fil !== filter));
 	};
-	const filterFunction = ({ role, level, tools, languages }) => {
-		if (filters.length === 0) {
+
+	const clearAll = () => {
+		setFilterJobs([]);
+	};
+	const handleFilters = ({ role, level, tools, languages }) => {
+		if (!filterJobs || filterJobs.length === 0) {
 			return true;
 		}
-
-		const tags = [role, level];
-
-		if (tools) {
-			tags.push(...tools);
-		}
-
-		if (languages) {
-			tags.push(...languages);
-		}
-
-		return filters.every((filter) => tags.includes(filter));
+		const filterOption = [role, level, ...(tools || []), ...(languages || [])];
+		return filterJobs.every((filter) => filterOption.includes(filter));
 	};
 
-	const filteredJobs = jobs.filter(filterFunction);
+	const selectedFilters = data.filter(handleFilters);
 
 	return (
 		<JobContext.Provider
 			value={{
 				addFilter,
 				removeFilter,
-				clearFilters,
-				filters,
-				filteredJobs,
+				clearAll,
+				filterJobs,
+				selectedFilters,
 			}}>
 			{children}
 		</JobContext.Provider>

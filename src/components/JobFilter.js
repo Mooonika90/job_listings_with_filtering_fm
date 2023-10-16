@@ -2,21 +2,21 @@ import { useJobContext } from '../ContextProvider';
 import removeBtn from '../assets/icon-remove.svg';
 
 function JobFilter() {
-	const { filters, removeFilter, clearFilters } = useJobContext();
+	const { filterJobs, removeFilter, clearAll } = useJobContext();
 
 	return (
 		<div className='filter-modal'>
 			<ul className='lang-list modal-list'>
-				{filters.map((tag, index) => (
+				{filterJobs.map((filterOption, index) => (
 					<li key={index}>
-						{tag}
-						<button onClick={() => removeFilter(tag)}>
+						{filterOption}
+						<button aria-label="Submit" onClick={() => removeFilter(filterOption)}>
 							<img src={removeBtn} alt='' />
 						</button>
 					</li>
 				))}
 			</ul>
-			<span onClick={() => clearFilters()}>Clear</span>
+			<span onClick={() => clearAll()}>Clear</span>
 		</div>
 	);
 }
