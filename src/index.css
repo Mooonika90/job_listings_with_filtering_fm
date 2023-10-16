@@ -223,7 +223,7 @@ article div ul,
 	justify-content: space-between;
 }
 .filter-modal span {
-	color: var(--desaturated-dark-cyan);
+	color: var(--dark-grayish-cyan);
 	cursor: pointer;
 	font-weight: bold;
 }
@@ -234,7 +234,6 @@ article div ul,
 	gap: 0.5rem;
 	padding: 0;
 	padding-left: 0.5rem;
-	line-height: 2.2;
 	overflow: hidden;
 }
 
